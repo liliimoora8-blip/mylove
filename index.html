@@ -1,0 +1,1727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>For Yuvika Yuvi ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+    <style>
+        /* ───────────── Reset & Base ───────────── */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html,
+        body {
+            width: 100%;
+            min-height: 100vh;
+            font-family: 'Poppins', sans-serif;
+            background: #1a0a1e;
+            color: #f5e6f0;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a0a1e;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d4af37;
+            border-radius: 8px;
+        }
+
+        /* ───────────── Particles Canvas ───────────── */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ───────────── Music Toggle ───────────── */
+        #music-toggle {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            z-index: 999;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(212, 175, 55, 0.5);
+            background: rgba(26, 10, 30, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            color: #d4af37;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 24px rgba(212, 175, 55, 0.15);
+        }
+        #music-toggle:hover {
+            transform: scale(1.08);
+            border-color: #d4af37;
+            box-shadow: 0 4px 32px rgba(212, 175, 55, 0.3);
+        }
+        #music-toggle.playing {
+            border-color: #ff6b9d;
+            box-shadow: 0 4px 32px rgba(255, 107, 157, 0.25);
+        }
+
+        /* ───────────── Screen Container ───────────── */
+        .screen {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            min-height: 100vh;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px 20px;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+        }
+        .screen.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        /* ───────────── Welcome Screen ───────────── */
+        #welcome-screen {
+            text-align: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: radial-gradient(ellipse at 50% 30%, #2d1233, #1a0a1e 70%);
+        }
+        #welcome-screen .glow-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            pointer-events: none;
+        }
+        #welcome-screen .glow-orb.orb1 {
+            width: 280px;
+            height: 280px;
+            background: rgba(212, 107, 157, 0.15);
+            top: -60px;
+            right: -60px;
+        }
+        #welcome-screen .glow-orb.orb2 {
+            width: 200px;
+            height: 200px;
+            background: rgba(212, 175, 55, 0.08);
+            bottom: 40px;
+            left: -40px;
+        }
+
+        .welcome-content {
+            position: relative;
+            z-index: 2;
+            max-width: 420px;
+            margin: 0 auto;
+        }
+        .welcome-content .subtitle {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(18px, 5vw, 28px);
+            color: #e8c4d8;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+            opacity: 0;
+            animation: fadeUp 1.2s ease 0.4s forwards;
+        }
+        .welcome-content .title-name {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(38px, 10vw, 58px);
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffd1dc, #d4af37, #ffb6c1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 60px rgba(212, 175, 55, 0.15);
+            margin-bottom: 16px;
+            opacity: 0;
+            animation: fadeUp 1.2s ease 0.7s forwards;
+        }
+        .welcome-content .love-message {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(14px, 3.5vw, 20px);
+            font-weight: 400;
+            color: #dcc8e0;
+            line-height: 1.7;
+            margin-bottom: 32px;
+            letter-spacing: 0.5px;
+            opacity: 0;
+            animation: fadeUp 1.2s ease 1.0s forwards;
+        }
+        .welcome-content .love-message span {
+            color: #ff8fab;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            padding: 16px 40px;
+            border: none;
+            border-radius: 60px;
+            background: linear-gradient(135deg, #d4af37, #b8942e);
+            color: #1a0a1e;
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(15px, 4vw, 19px);
+            font-weight: 600;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            box-shadow: 0 8px 40px rgba(212, 175, 55, 0.25);
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            animation: fadeUp 1.2s ease 1.4s forwards;
+        }
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 60px;
+            background: linear-gradient(135deg, #d4af37, #ffd1dc, #d4af37);
+            background-size: 300% 300%;
+            z-index: -1;
+            animation: shimmer 3s ease infinite;
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 48px rgba(212, 175, 55, 0.4);
+        }
+        .btn-primary:active {
+            transform: scale(0.96);
+        }
+
+        @keyframes shimmer {
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        /* ───────────── Door Hub Screen ───────────── */
+        #door-hub {
+            background: radial-gradient(ellipse at 50% 20%, #1f0d25, #0f060f);
+            padding: 28px 16px 40px;
+            justify-content: flex-start;
+            min-height: 100vh;
+        }
+        .hub-header {
+            text-align: center;
+            margin-bottom: 28px;
+            padding-top: 12px;
+        }
+        .hub-header h2 {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(26px, 7vw, 40px);
+            background: linear-gradient(135deg, #ffd1dc, #d4af37);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hub-header p {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(13px, 3vw, 17px);
+            color: #b8a0c0;
+            margin-top: 4px;
+        }
+        .hub-progress {
+            width: 100%;
+            max-width: 340px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 4px;
+            margin: 14px auto 0;
+            overflow: hidden;
+        }
+        .hub-progress .bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #d4af37, #ff8fab);
+            border-radius: 4px;
+            transition: width 0.6s ease;
+        }
+
+        .door-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            width: 100%;
+            max-width: 440px;
+            margin: 0 auto;
+        }
+
+        .door-card {
+            position: relative;
+            aspect-ratio: 1 / 1.2;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 6px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        .door-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 20px;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.05), rgba(255, 107, 157, 0.05));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .door-card:hover::before,
+        .door-card:active::before {
+            opacity: 1;
+        }
+        .door-card .door-icon {
+            font-size: clamp(36px, 10vw, 56px);
+            margin-bottom: 4px;
+            transition: transform 0.4s ease;
+            filter: drop-shadow(0 4px 12px rgba(212, 175, 55, 0.15));
+        }
+        .door-card .door-label {
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(10px, 2.6vw, 14px);
+            font-weight: 400;
+            color: #dcc8e0;
+            text-align: center;
+            letter-spacing: 0.3px;
+            line-height: 1.3;
+        }
+        .door-card .door-number {
+            position: absolute;
+            top: 8px;
+            right: 10px;
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(16px, 4vw, 24px);
+            color: rgba(212, 175, 55, 0.3);
+            font-weight: 700;
+        }
+        .door-card .door-lock {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            font-size: 14px;
+            opacity: 0.3;
+            transition: opacity 0.3s ease;
+        }
+        .door-card.unlocked .door-lock {
+            opacity: 0.8;
+            color: #d4af37;
+        }
+        .door-card .door-glow {
+            position: absolute;
+            inset: -2px;
+            border-radius: 20px;
+            border: 1.5px solid transparent;
+            transition: border-color 0.4s ease, box-shadow 0.4s ease;
+            pointer-events: none;
+        }
+        .door-card.unlocked .door-glow {
+            border-color: rgba(212, 175, 55, 0.3);
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.05);
+        }
+        .door-card:active {
+            transform: scale(0.94);
+        }
+        .door-card .door-check {
+            position: absolute;
+            top: 8px;
+            left: 10px;
+            font-size: 16px;
+            color: #d4af37;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .door-card.unlocked .door-check {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .final-door-wrapper {
+            width: 100%;
+            max-width: 440px;
+            margin: 20px auto 0;
+            text-align: center;
+        }
+        .final-door-wrapper .final-hint {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(18px, 5vw, 28px);
+            color: #d4af37;
+            opacity: 0.4;
+            transition: all 0.6s ease;
+        }
+        .final-door-wrapper .final-hint.show {
+            opacity: 1;
+            animation: pulseGlow 2s ease-in-out infinite;
+        }
+        @keyframes pulseGlow {
+            0%,
+            100% {
+                text-shadow: 0 0 20px rgba(212, 175, 55, 0.1);
+            }
+            50% {
+                text-shadow: 0 0 40px rgba(212, 175, 55, 0.4), 0 0 80px rgba(212, 175, 55, 0.1);
+            }
+        }
+
+        /* ───────────── Door Content Overlay ───────────── */
+        .door-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: rgba(10, 4, 12, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        .door-overlay.open {
+            display: flex;
+            opacity: 1;
+        }
+        .door-overlay .overlay-content {
+            width: 100%;
+            max-width: 480px;
+            max-height: 90vh;
+            overflow-y: auto;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 32px 24px 28px;
+            position: relative;
+            transform: scale(0.92) translateY(20px);
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease;
+            opacity: 0;
+        }
+        .door-overlay.open .overlay-content {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+        .overlay-content .close-btn {
+            position: absolute;
+            top: 14px;
+            right: 16px;
+            background: rgba(255, 255, 255, 0.06);
+            border: none;
+            color: #dcc8e0;
+            font-size: 24px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        .overlay-content .close-btn:hover {
+            background: rgba(255, 107, 157, 0.15);
+            color: #ff8fab;
+        }
+        .overlay-content .door-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(24px, 6vw, 36px);
+            color: #d4af37;
+            margin-bottom: 6px;
+            text-align: center;
+        }
+        .overlay-content .door-subtitle {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(13px, 3vw, 17px);
+            color: #b8a0c0;
+            text-align: center;
+            margin-bottom: 18px;
+            font-style: italic;
+        }
+        .overlay-content .door-body {
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(14px, 3.5vw, 18px);
+            line-height: 1.8;
+            color: #e8d8ec;
+            text-align: center;
+        }
+        .overlay-content .door-body .heart-emoji {
+            display: inline-block;
+            animation: heartBeat 1.6s ease-in-out infinite;
+        }
+        @keyframes heartBeat {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            15% {
+                transform: scale(1.2);
+            }
+            30% {
+                transform: scale(1);
+            }
+            45% {
+                transform: scale(1.15);
+            }
+            60% {
+                transform: scale(1);
+            }
+        }
+
+        /* ─── Door-specific styles ─── */
+        .reason-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 12px;
+        }
+        .reason-item {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 14px;
+            padding: 14px 18px;
+            border-left: 3px solid #d4af37;
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(13px, 3.2vw, 17px);
+            color: #e8d8ec;
+            opacity: 0;
+            transform: translateX(-12px);
+            animation: slideInItem 0.5s ease forwards;
+        }
+        .reason-item:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+        .reason-item:nth-child(2) {
+            animation-delay: 0.25s;
+        }
+        .reason-item:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        .reason-item:nth-child(4) {
+            animation-delay: 0.55s;
+        }
+        .reason-item:nth-child(5) {
+            animation-delay: 0.7s;
+        }
+        @keyframes slideInItem {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .promise-book {
+            position: relative;
+            padding: 8px 4px;
+        }
+        .promise-page {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 16px 20px;
+            margin-bottom: 10px;
+            border: 1px solid rgba(212, 175, 55, 0.08);
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(14px, 3.5vw, 18px);
+            color: #e8d8ec;
+            opacity: 0;
+            transform: rotateY(-12deg) scale(0.96);
+            animation: flipPage 0.6s ease forwards;
+            transform-origin: left center;
+        }
+        .promise-page:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+        .promise-page:nth-child(2) {
+            animation-delay: 0.3s;
+        }
+        .promise-page:nth-child(3) {
+            animation-delay: 0.5s;
+        }
+        .promise-page:nth-child(4) {
+            animation-delay: 0.7s;
+        }
+        @keyframes flipPage {
+            0% {
+                opacity: 0;
+                transform: rotateY(-12deg) scale(0.96);
+            }
+            100% {
+                opacity: 1;
+                transform: rotateY(0) scale(1);
+            }
+        }
+        .promise-page .promise-icon {
+            margin-right: 10px;
+        }
+
+        .envelope-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 12px;
+        }
+        .envelope-item {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            padding: 16px 10px;
+            text-align: center;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            transition: all 0.3s ease;
+            font-size: 28px;
+        }
+        .envelope-item:hover,
+        .envelope-item:active {
+            background: rgba(212, 175, 55, 0.08);
+            border-color: rgba(212, 175, 55, 0.15);
+            transform: scale(1.02);
+        }
+        .envelope-item .env-label {
+            display: block;
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(10px, 2.4vw, 13px);
+            color: #b8a0c0;
+            margin-top: 4px;
+        }
+        .letter-popup {
+            display: none;
+            background: rgba(20, 8, 24, 0.96);
+            border-radius: 20px;
+            padding: 24px 20px;
+            margin-top: 16px;
+            border: 1px solid rgba(212, 175, 55, 0.12);
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(14px, 3.5vw, 18px);
+            color: #e8d8ec;
+            line-height: 1.7;
+            animation: fadeUp 0.5s ease;
+        }
+        .letter-popup.show {
+            display: block;
+        }
+        .letter-popup .letter-sender {
+            font-family: 'Dancing Script', cursive;
+            color: #d4af37;
+            font-size: clamp(15px, 4vw, 20px);
+            margin-top: 8px;
+            text-align: right;
+        }
+
+        .star-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 12px;
+        }
+        .star-item {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 16px 8px;
+            text-align: center;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            transition: all 0.3s ease;
+            font-size: 28px;
+        }
+        .star-item:hover,
+        .star-item:active {
+            background: rgba(212, 175, 55, 0.08);
+            border-color: rgba(212, 175, 55, 0.15);
+            transform: scale(1.04);
+        }
+        .star-item .star-label {
+            display: block;
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(9px, 2.2vw, 12px);
+            color: #b8a0c0;
+            margin-top: 2px;
+        }
+        .star-dream {
+            display: none;
+            margin-top: 14px;
+            padding: 16px 20px;
+            background: rgba(212, 175, 55, 0.06);
+            border-radius: 16px;
+            border: 1px solid rgba(212, 175, 55, 0.08);
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(14px, 3.5vw, 18px);
+            color: #e8d8ec;
+            text-align: center;
+            animation: fadeUp 0.5s ease;
+        }
+        .star-dream.show {
+            display: block;
+        }
+
+        .flower-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 12px;
+        }
+        .flower-item {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 16px 8px;
+            text-align: center;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            transition: all 0.3s ease;
+            font-size: 32px;
+        }
+        .flower-item:hover,
+        .flower-item:active {
+            background: rgba(255, 107, 157, 0.08);
+            border-color: rgba(255, 107, 157, 0.15);
+            transform: scale(1.04);
+        }
+        .flower-item .flower-label {
+            display: block;
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(9px, 2.2vw, 12px);
+            color: #b8a0c0;
+            margin-top: 2px;
+        }
+        .flower-memory {
+            display: none;
+            margin-top: 14px;
+            padding: 16px 20px;
+            background: rgba(255, 107, 157, 0.06);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 107, 157, 0.08);
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(14px, 3.5vw, 18px);
+            color: #e8d8ec;
+            text-align: center;
+            animation: fadeUp 0.5s ease;
+        }
+        .flower-memory.show {
+            display: block;
+        }
+
+        .treasure-content {
+            text-align: center;
+            padding: 12px 0;
+        }
+        .treasure-content .treasure-icon {
+            font-size: 64px;
+            animation: floatY 3s ease-in-out infinite;
+        }
+        .treasure-content .treasure-text {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(22px, 6vw, 36px);
+            color: #d4af37;
+            margin-top: 12px;
+            line-height: 1.5;
+        }
+        @keyframes floatY {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        /* ───────────── Final Scene ───────────── */
+        #final-screen {
+            background: radial-gradient(ellipse at 50% 40%, #1f0d25, #0a040e);
+            text-align: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 32px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        #final-screen .final-glow {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            pointer-events: none;
+        }
+        #final-screen .final-glow.g1 {
+            width: 400px;
+            height: 400px;
+            background: rgba(212, 107, 157, 0.1);
+            top: -100px;
+            left: -100px;
+        }
+        #final-screen .final-glow.g2 {
+            width: 300px;
+            height: 300px;
+            background: rgba(212, 175, 55, 0.06);
+            bottom: -60px;
+            right: -60px;
+        }
+
+        .final-content {
+            position: relative;
+            z-index: 2;
+            max-width: 440px;
+            margin: 0 auto;
+        }
+        .final-content .final-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(32px, 9vw, 54px);
+            color: #d4af37;
+            margin-bottom: 6px;
+        }
+        .final-content .final-sub {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(16px, 4vw, 24px);
+            color: #e8c4d8;
+            margin-bottom: 16px;
+            font-style: italic;
+        }
+        .final-content .final-message {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(15px, 4vw, 21px);
+            line-height: 1.9;
+            color: #e8d8ec;
+            margin: 16px 0 10px;
+        }
+        .final-content .final-message .highlight {
+            color: #ff8fab;
+            font-weight: 600;
+        }
+        .final-content .final-signature {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(22px, 6vw, 34px);
+            color: #d4af37;
+            margin-top: 12px;
+        }
+        .final-content .final-hearts {
+            font-size: 32px;
+            letter-spacing: 6px;
+            margin-top: 10px;
+            animation: floatY 2.4s ease-in-out infinite;
+        }
+
+        /* ───────────── Floating Elements ───────────── */
+        .float-container {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .float-item {
+            position: absolute;
+            font-size: 20px;
+            opacity: 0.3;
+            animation: floatUp linear infinite;
+        }
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) rotate(0deg) scale(0.6);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.3;
+            }
+            90% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(-20vh) rotate(720deg) scale(1);
+                opacity: 0;
+            }
+        }
+
+        /* ───────────── Animations ───────────── */
+        @keyframes fadeUp {
+            0% {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ───────────── Responsive ───────────── */
+        @media (max-width: 400px) {
+            .door-grid {
+                gap: 10px;
+            }
+            .door-card {
+                padding: 8px 4px;
+            }
+            .overlay-content {
+                padding: 24px 16px 20px;
+            }
+            .envelope-grid,
+            .flower-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+            .star-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+            }
+        }
+        @media (min-width: 600px) {
+            .door-grid {
+                grid-template-columns: repeat(3, 1fr);
+                max-width: 560px;
+                gap: 18px;
+            }
+            .door-card {
+                aspect-ratio: 1 / 1.1;
+            }
+            .envelope-grid,
+            .flower-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .star-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        @media (min-width: 900px) {
+            .door-grid {
+                grid-template-columns: repeat(4, 1fr);
+                max-width: 700px;
+            }
+        }
+
+        /* ───────────── Hidden helper ───────────── */
+        .hidden {
+            display: none !important;
+        }
+
+        /* ───────────── Overlay scroll styling ───────────── */
+        .overlay-content::-webkit-scrollbar {
+            width: 3px;
+        }
+        .overlay-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .overlay-content::-webkit-scrollbar-thumb {
+            background: #d4af37;
+            border-radius: 8px;
+        }
+
+        /* ───────────── Floating hearts in overlay ───────────── */
+        .floating-hearts-overlay {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 101;
+            overflow: hidden;
+        }
+        .floating-hearts-overlay .fh {
+            position: absolute;
+            font-size: 22px;
+            animation: floatHeart linear infinite;
+            opacity: 0.4;
+        }
+        @keyframes floatHeart {
+            0% {
+                transform: translateY(100vh) scale(0.4) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.5;
+            }
+            90% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(-10vh) scale(1.2) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ─── Particles Canvas ─── -->
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- ─── Floating Elements Container ─── -->
+    <div class="float-container" id="float-container"></div>
+
+    <!-- ─── Music Toggle ─── -->
+    <button id="music-toggle" aria-label="Toggle music">♫</button>
+
+    <!-- ─── Welcome Screen ─── -->
+    <div class="screen active" id="welcome-screen">
+        <div class="glow-orb orb1"></div>
+        <div class="glow-orb orb2"></div>
+        <div class="welcome-content">
+            <div class="subtitle">✨ For The Most Beautiful Soul In My Universe... ✨</div>
+            <div class="title-name">Yuvika Yuvi</div>
+            <div class="love-message">
+                this little world was created <span>only for you</span> ❤️
+            </div>
+            <button class="btn-primary" id="open-doors-btn">Open The Door To Our Love Story</button>
+        </div>
+    </div>
+
+    <!-- ─── Door Hub Screen ─── -->
+    <div class="screen" id="door-hub">
+        <div class="hub-header">
+            <h2>✨ Our Love Journey ✨</h2>
+            <p>open each door to discover a piece of my heart</p>
+            <div class="hub-progress">
+                <div class="bar" id="progress-bar"></div>
+            </div>
+        </div>
+        <div class="door-grid" id="door-grid">
+            <!-- Doors injected by JS -->
+        </div>
+        <div class="final-door-wrapper">
+            <div class="final-hint" id="final-hint">💫 One last door awaits... 💫</div>
+        </div>
+    </div>
+
+    <!-- ─── Door Overlay ─── -->
+    <div class="door-overlay" id="door-overlay">
+        <div class="overlay-content" id="overlay-content">
+            <button class="close-btn" id="overlay-close">✕</button>
+            <div id="overlay-body"></div>
+        </div>
+    </div>
+
+    <!-- ─── Floating Hearts Overlay ─── -->
+    <div class="floating-hearts-overlay" id="floating-hearts-overlay"></div>
+
+    <!-- ─── Final Screen ─── -->
+    <div class="screen" id="final-screen">
+        <div class="final-glow g1"></div>
+        <div class="final-glow g2"></div>
+        <div class="final-content">
+            <div class="final-title">Yuvika Yuvi ❤️</div>
+            <div class="final-sub">— Among billions of people —</div>
+            <div class="final-message">
+                my heart chose <span class="highlight">only one</span>.<br /><br />
+                And it will always choose <span class="highlight">you</span>.<br /><br />
+                <span style="font-size:1.2em;">Forever.</span>
+            </div>
+            <div class="final-signature">Love, Knight ❤️</div>
+            <div class="final-hearts">💖 ✨ 💖</div>
+        </div>
+    </div>
+
+    <script>
+        /* ═══════════════════════════════════════════════════
+           DATA
+           ═══════════════════════════════════════════════════ */
+        const DOORS_DATA = [{
+            id: 1,
+            icon: '🚪',
+            label: 'The Day You Changed My World',
+            title: 'The Day You Changed My World',
+            subtitle: 'a moment that rewrote my entire story',
+            body: `
+              <p style="margin-bottom:12px;">
+                Before you, my world was in black and white — then you walked in
+                and painted it with every shade of gold, pink, and lavender.
+              </p>
+              <p style="margin-bottom:8px;">
+                You didn't just enter my life, you <strong style="color:#ff8fab;">became</strong> it.
+                Every sunrise feels warmer, every night feels softer,
+                because I know you exist in this universe.
+              </p>
+              <p style="margin-top:12px; color:#d4af37; font-family:'Dancing Script',cursive; font-size:1.2em;">
+                — You changed everything, Yuvika. And I'll never be the same. ❤️
+              </p>
+            `
+        }, {
+            id: 2,
+            icon: '❤️',
+            label: 'Reasons Why I Love You',
+            title: 'Reasons Why I Love You',
+            subtitle: 'a thousand words could never be enough, but here are a few...',
+            body: `
+              <div class="reason-list">
+                <div class="reason-item">✨ Your smile lights up my darkest days.</div>
+                <div class="reason-item">🎵 Your voice feels like home.</div>
+                <div class="reason-item">🌸 Your happiness means everything to me.</div>
+                <div class="reason-item">🌙 You make ordinary moments magical.</div>
+                <div class="reason-item">💫 You are my favorite person in the entire universe.</div>
+              </div>
+            `
+        }, {
+            id: 3,
+            icon: '📖',
+            label: 'My Promise To You',
+            title: 'My Promise To You',
+            subtitle: 'a book of forever vows, written with my soul',
+            body: `
+              <div class="promise-book">
+                <div class="promise-page"><span class="promise-icon">🤝</span> I promise to stand beside you — through every storm and every sunrise.</div>
+                <div class="promise-page"><span class="promise-icon">😊</span> I promise to make you smile, even on days when the world feels heavy.</div>
+                <div class="promise-page"><span class="promise-icon">🛡️</span> I promise to protect your heart with everything I have.</div>
+                <div class="promise-page"><span class="promise-icon">💞</span> I promise to choose you — every single day, without hesitation.</div>
+              </div>
+            `
+        }, {
+            id: 4,
+            icon: '✉️',
+            label: 'Secret Love Letters',
+            title: 'Secret Love Letters',
+            subtitle: 'tap an envelope to read a letter from my heart',
+            body: `
+              <div class="envelope-grid" id="envelope-grid">
+                <div class="envelope-item" data-letter="0">✉️ <span class="env-label">Letter 1</span></div>
+                <div class="envelope-item" data-letter="1">✉️ <span class="env-label">Letter 2</span></div>
+                <div class="envelope-item" data-letter="2">✉️ <span class="env-label">Letter 3</span></div>
+                <div class="envelope-item" data-letter="3">✉️ <span class="env-label">Letter 4</span></div>
+              </div>
+              <div class="letter-popup" id="letter-popup"></div>
+            `
+        }, {
+            id: 5,
+            icon: '⭐',
+            label: 'Our Future Dreams',
+            title: 'Our Future Dreams',
+            subtitle: 'tap a star to see a dream I hold for us',
+            body: `
+              <div class="star-grid" id="star-grid">
+                <div class="star-item" data-dream="0">🌟 <span class="star-label">Travel</span></div>
+                <div class="star-item" data-dream="1">🌟 <span class="star-label">Sunsets</span></div>
+                <div class="star-item" data-dream="2">🌟 <span class="star-label">Life</span></div>
+                <div class="star-item" data-dream="3">🌟 <span class="star-label">Together</span></div>
+                <div class="star-item" data-dream="4">🌟 <span class="star-label">Forever</span></div>
+                <div class="star-item" data-dream="5">🌟 <span class="star-label">Us</span></div>
+              </div>
+              <div class="star-dream" id="star-dream"></div>
+            `
+        }, {
+            id: 6,
+            icon: '🌷',
+            label: 'Memory Garden',
+            title: 'Memory Garden',
+            subtitle: 'each flower holds a sweet memory or a loving thought',
+            body: `
+              <div class="flower-grid" id="flower-grid">
+                <div class="flower-item" data-memory="0">🌹 <span class="flower-label">Memory 1</span></div>
+                <div class="flower-item" data-memory="1">🌻 <span class="flower-label">Memory 2</span></div>
+                <div class="flower-item" data-memory="2">🌺 <span class="flower-label">Memory 3</span></div>
+                <div class="flower-item" data-memory="3">🌸 <span class="flower-label">Memory 4</span></div>
+              </div>
+              <div class="flower-memory" id="flower-memory"></div>
+            `
+        }, {
+            id: 7,
+            icon: '🎁',
+            label: 'The Treasure Chest',
+            title: 'The Treasure Chest Of My Heart',
+            subtitle: 'the greatest treasure life has ever given me...',
+            body: `
+              <div class="treasure-content">
+                <div class="treasure-icon">💎</div>
+                <div class="treasure-text">
+                  You are the greatest treasure<br>life has ever given me.
+                </div>
+                <div style="margin-top:16px; font-size:20px; color:#d4af37;">✨ 💛 ✨</div>
+              </div>
+            `
+        }];
+
+        const LETTERS = [
+            'My dearest Yuvika, every time I think of you, my heart feels like it\'s floating among the stars. You are the poetry I never knew I could write. — Knight 💌',
+            'Your laughter is my favorite melody. It plays in my mind on repeat, and I never want it to stop. Thank you for being you. — Knight 💕',
+            'Sometimes I wonder how I got so lucky. Then I remember — it wasn\'t luck. It was destiny, written in the stars, that brought me to you. — Knight ✨',
+            'You are the calm in my chaos, the light in my shadows, and the love in my every heartbeat. I adore you, Yuvika. — Knight 🌙'
+        ];
+
+        const DREAMS = [
+            '🌍 Traveling together — exploring the world, hand in hand, making memories in every corner of the earth.',
+            '🌅 Watching sunsets — holding you close as the sky paints itself in shades of gold and pink, just for us.',
+            '🏡 Building a beautiful life — a home filled with laughter, warmth, and the soft glow of our love.',
+            '👴👵 Growing old together — still holding hands, still laughing, still madly in love, even with silver hair.',
+            '💫 Forever — not just a word, but a promise. A lifetime of moments, big and small, all with you.',
+            '💞 Us — the most beautiful story ever written, and we\'re only at the beginning.'
+        ];
+
+        const MEMORIES = [
+            '🌹 The first time I saw you smile, I knew I was home. That smile is forever etched into my soul.',
+            '🌻 Your laugh fills the room like sunshine. It\'s my favorite sound in the entire universe.',
+            '🌺 You make even the quietest moments feel magical. Just being near you is enough.',
+            '🌸 You are the most beautiful person I know — not just outside, but deep within. Your heart shines brighter than any star.'
+        ];
+
+        /* ═══════════════════════════════════════════════════
+           STATE
+           ═══════════════════════════════════════════════════ */
+        let unlockedDoors = new Set();
+        let isOverlayOpen = false;
+        let currentDoorId = null;
+        let musicCtx = null;
+        let isMusicPlaying = false;
+        let musicInterval = null;
+
+        /* ═══════════════════════════════════════════════════
+           DOM refs
+           ═══════════════════════════════════════════════════ */
+        const welcomeScreen = document.getElementById('welcome-screen');
+        const doorHub = document.getElementById('door-hub');
+        const finalScreen = document.getElementById('final-screen');
+        const doorGrid = document.getElementById('door-grid');
+        const progressBar = document.getElementById('progress-bar');
+        const finalHint = document.getElementById('final-hint');
+        const overlay = document.getElementById('door-overlay');
+        const overlayBody = document.getElementById('overlay-body');
+        const overlayClose = document.getElementById('overlay-close');
+        const musicToggle = document.getElementById('music-toggle');
+        const floatContainer = document.getElementById('float-container');
+        const heartsOverlay = document.getElementById('floating-hearts-overlay');
+        const canvas = document.getElementById('particles-canvas');
+
+        /* ═══════════════════════════════════════════════════
+           Canvas Particles
+           ═══════════════════════════════════════════════════ */
+        let ctx = canvas.getContext('2d');
+        let particles = [];
+        let w, h;
+
+        function resizeCanvas() {
+            w = canvas.width = window.innerWidth;
+            h = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * w;
+                this.y = Math.random() * h;
+                this.size = Math.random() * 2.5 + 0.5;
+                this.speedX = (Math.random() - 0.5) * 0.4;
+                this.speedY = (Math.random() - 0.5) * 0.4;
+                this.opacity = Math.random() * 0.5 + 0.1;
+                this.type = Math.random() > 0.7 ? 'star' : 'dot';
+                this.twinkle = Math.random() * Math.PI * 2;
+                this.twinkleSpeed = 0.02 + Math.random() * 0.03;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.twinkle += this.twinkleSpeed;
+                if (this.x < 0 || this.x > w) this.speedX *= -1;
+                if (this.y < 0 || this.y > h) this.speedY *= -1;
+            }
+            draw() {
+                const alpha = this.opacity * (0.7 + 0.3 * Math.sin(this.twinkle));
+                ctx.globalAlpha = alpha;
+                if (this.type === 'star') {
+                    ctx.fillStyle = '#d4af37';
+                    ctx.shadowColor = '#d4af37';
+                    ctx.shadowBlur = 8;
+                    const s = this.size * 1.8;
+                    ctx.beginPath();
+                    for (let i = 0; i < 5; i++) {
+                        const a = (i / 5) * Math.PI * 2 - Math.PI / 2;
+                        const r = i % 2 === 0 ? s : s * 0.4;
+                        const px = this.x + Math.cos(a) * r;
+                        const py = this.y + Math.sin(a) * r;
+                        i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+                    }
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.shadowBlur = 0;
+                } else {
+                    ctx.fillStyle = '#e8c4d8';
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+                ctx.globalAlpha = 1;
+            }
+        }
+
+        function initParticles(count = 120) {
+            particles = [];
+            for (let i = 0; i < count; i++) particles.push(new Particle());
+        }
+        initParticles();
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, w, h);
+            particles.forEach(p => { p.update();
+                p.draw(); });
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        /* ═══════════════════════════════════════════════════
+           Floating Elements (hearts, stars, sparkles)
+           ═══════════════════════════════════════════════════ */
+        const FLOAT_EMOJIS = ['♥', '✦', '✧', '♡', '✨', '❋', '☆', '💫'];
+        let floatInterval;
+
+        function startFloating() {
+            if (floatInterval) return;
+            floatInterval = setInterval(() => {
+                const el = document.createElement('div');
+                el.className = 'float-item';
+                el.textContent = FLOAT_EMOJIS[Math.floor(Math.random() * FLOAT_EMOJIS.length)];
+                el.style.left = Math.random() * 90 + 5 + '%';
+                el.style.fontSize = (12 + Math.random() * 18) + 'px';
+                el.style.animationDuration = (12 + Math.random() * 20) + 's';
+                el.style.animationDelay = (Math.random() * 6) + 's';
+                el.style.opacity = 0.15 + Math.random() * 0.25;
+                floatContainer.appendChild(el);
+                setTimeout(() => el.remove(), 32000);
+            }, 800);
+        }
+        startFloating();
+
+        /* ═══════════════════════════════════════════════════
+           Floating Hearts Overlay
+           ═══════════════════════════════════════════════════ */
+        let heartsInterval;
+
+        function startHeartsOverlay() {
+            if (heartsInterval) return;
+            heartsInterval = setInterval(() => {
+                const el = document.createElement('div');
+                el.className = 'fh';
+                el.textContent = ['♥', '❤️', '💕', '💖', '✨'][Math.floor(Math.random() * 5)];
+                el.style.left = Math.random() * 90 + 5 + '%';
+                el.style.fontSize = (14 + Math.random() * 28) + 'px';
+                el.style.animationDuration = (10 + Math.random() * 16) + 's';
+                el.style.animationDelay = (Math.random() * 4) + 's';
+                el.style.opacity = 0.2 + Math.random() * 0.4;
+                heartsOverlay.appendChild(el);
+                setTimeout(() => el.remove(), 28000);
+            }, 500);
+        }
+
+        function stopHeartsOverlay() {
+            if (heartsInterval) {
+                clearInterval(heartsInterval);
+                heartsInterval = null;
+            }
+            heartsOverlay.innerHTML = '';
+        }
+
+        /* ═══════════════════════════════════════════════════
+           Background Music (Web Audio - soft piano)
+           ═══════════════════════════════════════════════════ */
+        function initMusic() {
+            try {
+                musicCtx = new(window.AudioContext || window.webkitAudioContext)();
+            } catch (_) { return; }
+        }
+
+        function playSoftMusic() {
+            if (!musicCtx) return;
+            if (musicCtx.state === 'suspended') musicCtx.resume();
+            if (isMusicPlaying) return;
+            isMusicPlaying = true;
+            musicToggle.textContent = '♬';
+            musicToggle.classList.add('playing');
+
+            const notes = [
+                [523, 0.4],
+                [587, 0.3],
+                [659, 0.5],
+                [587, 0.3],
+                [523, 0.4],
+                [494, 0.4],
+                [523, 0.6],
+                [587, 0.3],
+                [659, 0.5],
+                [784, 0.4],
+                [740, 0.3],
+                [659, 0.4],
+                [587, 0.5],
+                [523, 0.6],
+                [494, 0.3],
+                [440, 0.4],
+                [494, 0.5],
+                [523, 0.6]
+            ];
+
+            let noteIndex = 0;
+            let startTime = musicCtx.currentTime + 0.1;
+
+            function playNext() {
+                if (!isMusicPlaying) return;
+                const [freq, dur] = notes[noteIndex % notes.length];
+                const osc = musicCtx.createOscillator();
+                const gain = musicCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.value = freq;
+                gain.gain.setValueAtTime(0.08, musicCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, musicCtx.currentTime + dur * 0.9);
+                osc.connect(gain);
+                gain.connect(musicCtx.destination);
+                osc.start(startTime);
+                osc.stop(startTime + dur * 0.9);
+                noteIndex++;
+                startTime += dur * 0.7 + 0.08;
+                musicInterval = setTimeout(playNext, dur * 700 + 80);
+            }
+            playNext();
+        }
+
+        function stopMusic() {
+            isMusicPlaying = false;
+            musicToggle.textContent = '♫';
+            musicToggle.classList.remove('playing');
+            if (musicInterval) {
+                clearTimeout(musicInterval);
+                musicInterval = null;
+            }
+            if (musicCtx) {
+                try { musicCtx.suspend(); } catch (_) {}
+            }
+        }
+
+        function toggleMusic() {
+            if (!musicCtx) initMusic();
+            if (isMusicPlaying) {
+                stopMusic();
+            } else {
+                playSoftMusic();
+            }
+        }
+
+        musicToggle.addEventListener('click', toggleMusic);
+
+        /* ═══════════════════════════════════════════════════
+           Door Hub Rendering
+           ═══════════════════════════════════════════════════ */
+        function renderDoors() {
+            doorGrid.innerHTML = '';
+            DOORS_DATA.forEach((door, idx) => {
+                const card = document.createElement('div');
+                card.className = 'door-card';
+                if (unlockedDoors.has(door.id)) card.classList.add('unlocked');
+                card.dataset.doorId = door.id;
+                card.innerHTML = `
+                <span class="door-number">#${String(door.id).padStart(2,'0')}</span>
+                <span class="door-check">✓</span>
+                <div class="door-icon">${door.icon}</div>
+                <div class="door-label">${door.label}</div>
+                <span class="door-lock">${unlockedDoors.has(door.id) ? '🔓' : '🔒'}</span>
+                <div class="door-glow"></div>
+              `;
+                card.addEventListener('click', () => handleDoorClick(door.id));
+                doorGrid.appendChild(card);
+            });
+            updateProgress();
+            updateFinalHint();
+        }
+
+        function updateProgress() {
+            const count = unlockedDoors.size;
+            const total = DOORS_DATA.length;
+            const pct = Math.min(100, (count / total) * 100);
+            progressBar.style.width = pct + '%';
+        }
+
+        function updateFinalHint() {
+            const count = unlockedDoors.size;
+            const total = DOORS_DATA.length;
+            if (count >= total) {
+                finalHint.textContent = '🌟 The final portal is ready... tap to enter 🌟';
+                finalHint.classList.add('show');
+                finalHint.style.cursor = 'pointer';
+                finalHint.onclick = () => showFinalScene();
+            } else {
+                finalHint.textContent = `💫 ${total - count} more door${total - count > 1 ? 's' : ''} to unlock... 💫`;
+                finalHint.classList.remove('show');
+                finalHint.onclick = null;
+            }
+        }
+
+        /* ═══════════════════════════════════════════════════
+           Door Click Handler
+           ═══════════════════════════════════════════════════ */
+        function handleDoorClick(doorId) {
+            if (unlockedDoors.has(doorId)) {
+                // Re-open to view content
+                openDoorOverlay(doorId);
+                return;
+            }
+            // Unlock and open
+            unlockedDoors.add(doorId);
+            renderDoors();
+            openDoorOverlay(doorId);
+            // Trigger celebration particles
+            spawnCelebration();
+        }
+
+        function openDoorOverlay(doorId) {
+            const door = DOORS_DATA.find(d => d.id === doorId);
+            if (!door) return;
+            currentDoorId = doorId;
+            isOverlayOpen = true;
+
+            let bodyHTML = `
+              <div class="door-title">${door.title}</div>
+              <div class="door-subtitle">${door.subtitle}</div>
+              <div class="door-body">${door.body}</div>
+            `;
+
+            overlayBody.innerHTML = bodyHTML;
+            overlay.classList.add('open');
+
+            // If door 4, set up envelope listeners
+            if (doorId === 4) {
+                setTimeout(() => setupEnvelopes(), 100);
+            }
+            if (doorId === 5) {
+                setTimeout(() => setupStars(), 100);
+            }
+            if (doorId === 6) {
+                setTimeout(() => setupFlowers(), 100);
+            }
+
+            // Start hearts overlay
+            startHeartsOverlay();
+
+            // Play a little sound effect if music is on
+            if (isMusicPlaying) {
+                try {
+                    const osc = musicCtx.createOscillator();
+                    const g = musicCtx.createGain();
+                    osc.frequency.value = 880;
+                    osc.type = 'sine';
+                    g.gain.setValueAtTime(0.04, musicCtx.currentTime);
+                    g.gain.exponentialRampToValueAtTime(0.001, musicCtx.currentTime + 0.3);
+                    osc.connect(g);
+                    g.connect(musicCtx.destination);
+                    osc.start();
+                    osc.stop(musicCtx.currentTime + 0.3);
+                } catch (_) {}
+            }
+
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeOverlay() {
+            overlay.classList.remove('open');
+            isOverlayOpen = false;
+            currentDoorId = null;
+            document.body.style.overflow = '';
+            stopHeartsOverlay();
+        }
+
+        overlayClose.addEventListener('click', closeOverlay);
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) closeOverlay();
+        });
+
+        /* ═══════════════════════════════════════════════════
+           Door 4: Envelopes
+           ═══════════════════════════════════════════════════ */
+        function setupEnvelopes() {
+            document.querySelectorAll('.envelope-item').forEach(el => {
+                el.addEventListener('click', function() {
+                    const idx = parseInt(this.dataset.letter);
+                    const popup = document.getElementById('letter-popup');
+                    if (isNaN(idx)) return;
+                    popup.textContent = LETTERS[idx] || '💌 A secret from my heart...';
+                    popup.classList.add('show');
+                    // auto-hide after 6s
+                    clearTimeout(popup._timer);
+                    popup._timer = setTimeout(() => popup.classList.remove('show'), 6000);
+                });
+            });
+        }
+
+        /* ═══════════════════════════════════════════════════
+           Door 5: Stars
+           ═══════════════════════════════════════════════════ */
+        function setupStars() {
+            document.querySelectorAll('.star-item').forEach(el => {
+                el.addEventListener('click', function() {
+                    const idx = parseInt(this.dataset.dream);
+                    const display = document.getElementById('star-dream');
+                    if (isNaN(idx)) return;
+                    display.textContent = DREAMS[idx] || '✨ A dream yet to be written...';
+                    display.classList.add('show');
+                    clearTimeout(display._timer);
+                    display._timer = setTimeout(() => display.classList.remove('show'), 7000);
+                });
+            });
+        }
+
+        /* ═══════════════════════════════════════════════════
+           Door 6: Flowers
+           ═══════════════════════════════════════════════════ */
+        function setupFlowers() {
+            document.querySelectorAll('.flower-item').forEach(el => {
+                el.addEventListener('click', function() {
+                    const idx = parseInt(this.dataset.memory);
+                    const display = document.getElementById('flower-memory');
+                    if (isNaN(idx)) return;
+                    display.textContent = MEMORIES[idx] || '🌸 A sweet thought of you...';
+                    display.classList.add('show');
+                    clearTimeout(display._timer);
+                    display._timer = setTimeout(() => display.classList.remove('show'), 7000);
+                });
+            });
+        }
+
+        /* ═══════════════════════════════════════════════════
+           Celebration Particles (on unlock)
+           ═══════════════════════════════════════════════════ */
+        function spawnCelebration() {
+            const emojis = ['✨', '❤️', '💕', '🌟', '🎉', '💖', '🎊', '♥'];
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    const el = document.createElement('div');
+                    el.style.cssText = `
+                  position: fixed;
+                  pointer-events: none;
+                  z-index: 999;
+                  font-size: ${16 + Math.random() * 28}px;
+                  left: ${10 + Math.random() * 80}%;
+                  top: ${10 + Math.random() * 80}%;
+                  opacity: 0;
+                  transform: scale(0.3) rotate(${Math.random() * 360}deg);
+                  transition: all ${0.6 + Math.random() * 1.0}s cubic-bezier(0.34, 1.56, 0.64, 1);
+                `;
+                    el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                    document.body.appendChild(el);
+                    requestAnimationFrame(() => {
+                        el.style.opacity = '1';
+                        el.style.transform = `scale(1.4) translate(${(Math.random()-0.5)*120}px, ${(Math.random()-0.5)*120}px)`;
+                    });
+                    setTimeout(() => {
+                        el.style.opacity = '0';
+                        el.style.transform = `scale(0.2) translate(${(Math.random()-0.5)*200}px, ${(Math.random()-0.5)*200}px)`;
+                        setTimeout(() => el.remove(), 1200);
+                    }, 1200);
+                }, i * 60);
+            }
+        }
+
+        /* ═══════════════════════════════════════════════════
+           Final Scene
+           ═══════════════════════════════════════════════════ */
+        function showFinalScene() {
+            // Close overlay if open
+            if (isOverlayOpen) closeOverlay();
+
+            // Hide door hub, show final
+            doorHub.classList.remove('active');
+            finalScreen.classList.add('active');
+
+            // Massive celebration
+            for (let wave = 0; wave < 5; wave++) {
+                setTimeout(() => {
+                    for (let i = 0; i < 40; i++) {
+                        setTimeout(() => {
+                            const el = document.createElement('div');
+                            el.style.cssText = `
+                        position: fixed;
+                        pointer-events: none;
+                        z-index: 999;
+                        font-size: ${18 + Math.random() * 36}px;
+                        left: ${5 + Math.random() * 90}%;
+                        top: ${-10 + Math.random() * 20}%;
+                        opacity: 0;
+                        transform: scale(0.2);
+                        transition: all ${1.2 + Math.random() * 2}s cubic-bezier(0.34, 1.56, 0.64, 1);
+                      `;
+                            const emojis = ['❤️', '💕', '✨', '🌟', '💖', '♥', '⭐', '🎆', '💫'];
+                            el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                            document.body.appendChild(el);
+                            requestAnimationFrame(() => {
+                                el.style.opacity = '0.9';
+                                el.style.transform =
+                                    `scale(1.6) translateY(${60 + Math.random() * 80}vh) rotate(${Math.random() * 720}deg)`;
+                            });
+                            setTimeout(() => {
+                                el.style.opacity = '0';
+                                setTimeout(() => el.remove(), 2500);
+                            }, 2500);
+                        }, i * 50);
+                    }
+                }, wave * 800);
+            }
+
+            // Start heavy hearts
+            startHeartsOverlay();
+
+            // Ensure music is playing
+            if (!isMusicPlaying) {
+                if (!musicCtx) initMusic();
+                playSoftMusic();
+            }
+        }
+
+        /* ═══════════════════════════════════════════════════
+           Navigation: Welcome → Door Hub
+           ═══════════════════════════════════════════════════ */
+        document.getElementById('open-doors-btn').addEventListener('click', function() {
+            welcomeScreen.classList.remove('active');
+            doorHub.classList.add('active');
+            renderDoors();
+            // Start music if not already
+            if (!isMusicPlaying) {
+                if (!musicCtx) initMusic();
+                playSoftMusic();
+            }
+            // Trigger initial float
+            for (let i = 0; i < 10; i++) {
+                setTimeout(() => {
+                    const el = document.createElement('div');
+                    el.className = 'float-item';
+                    el.textContent = ['♥', '✦', '♡', '✨', '💫'][Math.floor(Math.random() * 5)];
+                    el.style.left = Math.random() * 90 + 5 + '%';
+                    el.style.fontSize = (14 + Math.random() * 22) + 'px';
+                    el.style.animationDuration = (14 + Math.random() * 18) + 's';
+                    el.style.opacity = 0.15 + Math.random() * 0.25;
+                    floatContainer.appendChild(el);
+                    setTimeout(() => el.remove(), 32000);
+                }, i * 120);
+            }
+        });
+
+        /* ═══════════════════════════════════════════════════
+           Keyboard support
+           ═══════════════════════════════════════════════════ */
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && isOverlayOpen) closeOverlay();
+        });
+
+        /* ═══════════════════════════════════════════════════
+           Init
+           ═══════════════════════════════════════════════════ */
+        renderDoors();
+
+        console.log('💖 For Yuvika Yuvi, with all my love — Knight 💖');
+        console.log('✨ This little world was created only for you. ✨');
+    </script>
+</body>
+</html>
